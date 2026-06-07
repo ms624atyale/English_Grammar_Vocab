@@ -1,1 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토익뽀개기 ✨ TOEIC Vocab Master</title>
+    <style>
+        /* --- Typography & Reset --- */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Gowun+Dodum&display=swap');
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Gowun Dodum', sans-serif;
+            background-color: #f7f9fc;
+            color: #4a4a4a;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3, .en-word {
+            font-family: 'Fredoka', 'Gowun Dodum', sans-serif;
+        }
+
+        /* --- Layout Container --- */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(163, 177, 198, 0.35);
+            border: 4px solid #ffe3e3;
+        }
+
+        /* --- Header Section --- */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+            padding: 20px;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 0.95rem;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        /* --- Progress Section --- */
+        .overall-progress {
+            background: #fff0f5;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px dashed #ffb6c1;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #ff6b81;
+        }
+
+        .progress-bar-bg {
+            background: #eef2f7;
+            height: 14px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #dcdde1;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #ff6b81, #ff4757);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 10px;
+        }
+
+        /* --- Section Titles --- */
+        .section-title {
+            font-size: 1.3rem;
+            color: #485460;
+            margin: 20px 0 15px 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Cards Section --- */
+        .vocab-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background: #ffffff;
+            border: 3px solid #f1f2f6;
+            border-radius: 20px;
+            padding: 18px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 4px 0px #f1f2f6;
+        }
+
+        /* Animated Hover & Active States */
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffeaa7;
+            box-shadow: 0 9px 0px #ffeaa7;
+            background: #fffdf9;
+        }
+
+        .vocab-card.completed {
+            border-color: #dff9fb;
+            background: #f5fdfd;
+            box-shadow: 0 4px 0px #c7ecee;
+        }
+
+        .vocab-card.completed .check-icon {
+            background: #2ed573;
+            color: white;
+        }
+
+        /* Card Elements */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .en-word {
+            font-size: 1.5rem;
+            color: #ff4757;
+            font-weight: 700;
+        }
+
+        .part-of-speech {
+            font-size: 0.75rem;
+            background: #ffeaa7;
+            color: #d63031;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .ko-meaning {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #2f3542;
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: #f1f2f6;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #57606f;
+            line-height: 1.4;
+        }
+
+        .example-box strong {
+            color: #333;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #ced6e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            transition: background 0.2s;
+            background: white;
+        }
+
+        /* --- Quiz Section --- */
+        .quiz-box {
+            background: #f0f2f6;
+            border-radius: 22px;
+            padding: 20px;
+            margin-top: 35px;
+            border: 3px solid #e4e7eb;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2f3542;
+        }
+
+        .quiz-question span {
+            display: block;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            color: #00bcd4;
+            margin-top: 5px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ced6e0;
+            padding: 12px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-family: 'Gowun Dodum', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+            color: #57606f;
+        }
+
+        .option-btn:hover {
+            background: #e8f4f8;
+            border-color: #00bcd4;
+            color: #00bcd4;
+            transform: scale(1.01);
+        }
+
+        .option-btn.correct {
+            background: #2ed573 !important;
+            color: white !important;
+            border-color: #2ed573 !important;
+            animation: pop 0.3s ease;
+        }
+
+        .option-btn.wrong {
+            background: #ff4757 !important;
+            color: white !important;
+            border-color: #ff4757 !important;
+            animation: shake 0.3s ease;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            min-height: 24px;
+            font-size: 1rem;
+        }
+
+        /* --- Animations --- */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.8rem;
+            color: #a4b0be;
+        }
+
+        /* --- Mobile Responsive adjustments --- */
+        @media(max-width: 480px) {
+            body { padding: 10px 5px; }
+            .container { padding: 15px; border-width: 3px; }
+            header h1 { font-size: 1.8rem; }
+            .en-word { font-size: 1.3rem; }
+            .quiz-question span { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>토익뽀개기 ✨</h1>
+            <p>새내기를 위한 필수 TOEIC 단어장</p>
+        </header>
+
+        <div class="overall-progress">
+            <div class="progress-label">
+                <span>오늘의 학습 진도율 📚</span>
+                <span id="progress-text">0% 완료</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <h2 class="section-title">💡 오늘의 빈출 단어 (카드 클릭시 완료!)</h2>
+        <div class="vocab-grid">
+            
+            <div class="vocab-card" onclick="toggleCard(this, 1)">
+                <div class="card-header">
+                    <span class="en-word">Accommodate</span>
+                    <span class="part-of-speech">동사</span>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="ko-meaning">수용하다, 편의를 도모하다</div>
+                <div class="example-box">
+                    <strong>Ex:</strong> The new hotel can <strong>accommodate</strong> up to 500 guests comfortably.
+                </div>
+            </div>
+
+            <div class="vocab-card" onclick="toggleCard(this, 2)">
+                <div class="card-header">
+                    <span class="en-word">Mandatory</span>
+                    <span class="part-of-speech">형용사</span>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="ko-meaning">의무적인, 필수의</div>
+                <div class="example-box">
+                    <strong>Ex:</strong> Attendance at the freshman orientation is <strong>mandatory</strong>.
+                </div>
+            </div>
+
+            <div class="vocab-card" onclick="toggleCard(this, 3)">
+                <div class="card-header">
+                    <span class="en-word">Postpone</span>
+                    <span class="part-of-speech">동사</span>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="ko-meaning">연기하다, 미루다</div>
+                <div class="example-box">
+                    <strong>Ex:</strong> The outdoor meeting was <strong>postponed</strong> because of the heavy rain.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="quiz-box">
+            <h2 class="section-title" style="justify-content: center; margin-top: 0;">🎯 미니 확인 퀴즈</h2>
+            <div class="quiz-question">
+                다음 문맥에 알맞은 단어는 무엇일까요?
+                <span>"Attendance is ________."<br><small style="font-size:0.85rem; color:#747d8c;">(출석은 의무적입니다.)</small></span>
+            </div>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(this, false)">Accommodate</button>
+                <button class="option-btn" onclick="checkAnswer(this, true)">Mandatory</button>
+                <button class="option-btn" onclick="checkAnswer(this, false)">Postpone</button>
+            </div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>
+
+        <footer>
+            © 2026 캠퍼스 토익 마스터 • 새내기 화이팅 🚀
+        </footer>
+    </div>
+
+    <script>
+        // Track completed status of the 3 built-in cards
+        const completedCards = { 1: false, 2: false, 3: false };
+        const totalCards = 3;
+
+        function toggleCard(cardElement, id) {
+            cardElement.classList.toggle('completed');
+            completedCards[id] = cardElement.classList.contains('completed');
+            
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const completedCount = Object.values(completedCards).filter(status => status === true).length;
+            const percentage = Math.round((completedCount / totalCards) * 100);
+            
+            // Apply properties to elements
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').innerText = percentage + '% 완료';
+        }
+
+        function checkAnswer(button, isCorrect) {
+            // Reset existing active states on siblings
+            const options = button.parentElement.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'wrong');
+                opt.disabled = true; // Disable further clicking after an answer is chosen
+            });
+
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.innerHTML = "🎉 정답입니다! 아주 잘했어요! 👍";
+                feedback.style.color = "#2ed573";
+            } else {
+                button.classList.add('wrong');
+                feedback.innerHTML = "😢 아쉬워요! 다시 한 번 카드를 확인해 보세요.";
+                feedback.style.color = "#ff4757";
+                
+                // Reactive unlock after 1.5s so they can try again if wrong
+                setTimeout(() => {
+                    options.forEach(opt => opt.disabled = false);
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
