@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEIC Vocab Master ✨ Ace the Exam</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f4f7f6;
+            color: #2c3e50;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2, h3, .en-word, .phonetic {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 12px 35px rgba(142, 151, 172, 0.2);
+            border: 4px solid #fff0f5;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            padding: 22px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 175, 189, 0.4);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+        }
+
+        header p {
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .overall-progress {
+            background: #fff5f6;
+            padding: 16px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            border: 2px dashed #ffb6c1;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #ff6b81;
+        }
+
+        .progress-bar-bg {
+            background: #eef2f7;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #ff6b81, #ff4757);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            color: #34495e;
+            margin: 20px 0 15px 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vocab-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .vocab-card {
+            background: #ffffff;
+            border: 3px solid #f1f2f6;
+            border-radius: 22px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 5px 0px #f1f2f6;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-4px);
+            border-color: #ffeaa7;
+            box-shadow: 0 9px 0px #ffeaa7;
+            background: #fffdf9;
+        }
+
+        .vocab-card.completed {
+            border-color: #e3fafc;
+            background: #f8feff;
+            box-shadow: 0 5px 0px #c5f6fa;
+        }
+
+        .vocab-card.completed .check-icon {
+            background: #2ed573;
+            color: white;
+            border-color: #2ed573;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .word-audio-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .en-word {
+            font-size: 1.75rem;
+            color: #ff4757;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .audio-btn {
+            background: #ffe0e6;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.15);
+            background: #ff6b81;
+        }
+
+        .phonetic {
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: 500;
+            margin-top: -2px;
+            margin-bottom: 15px;
+        }
+
+        .pos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pos-block {
+            background: #fafbfc;
+            border-left: 4px solid #ff7f50;
+            padding: 10px 14px;
+            border-radius: 6px 14px 14px 6px;
+            transition: background 0.2s;
+        }
+
+        .vocab-card:hover .pos-block {
+            background: #ffffff;
+        }
+
+        .pos-badge {
+            font-size: 0.75rem;
+            background: #ffeaa7;
+            color: #d63031;
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 6px;
+            text-transform: lowercase;
+        }
+
+        .ko-meaning {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 6px;
+        }
+
+        .example-box {
+            background: #f1f2f6;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #57606f;
+            line-height: 1.4;
+        }
+
+        .check-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 2px solid #ced6e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            background: white;
+            color: #ced6e0;
+            transition: all 0.2s;
+        }
+
+        /* --- Mini Quiz UI --- */
+        .quiz-box {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 22px;
+            margin-top: 35px;
+            border: 3px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .quiz-question span {
+            display: block;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: #00b8d4;
+            margin-top: 8px;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .option-btn:hover {
+            background: #f0fdfa;
+            border-color: #00b8d4;
+            color: #00b8d4;
+            transform: translateY(-1px);
+        }
+
+        .option-btn.correct {
+            background: #2ed573 !important;
+            color: white !important;
+            border-color: #2ed573 !important;
+            animation: pop 0.3s ease;
+        }
+
+        .option-btn.wrong {
+            background: #ff4757 !important;
+            color: white !important;
+            border-color: #ff4757 !important;
+            animation: shake 0.3s ease;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            font-weight: 700;
+            min-height: 24px;
+            font-size: 0.95rem;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        @media(max-width: 480px) {
+            body { padding: 10px 5px; }
+            .container { padding: 16px; }
+            header h1 { font-size: 1.9rem; }
+            .en-word { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Dashboard Header -->
+        <header>
+            <h1>TOEIC Prep Hub ✨</h1>
+            <p>Mastering Transitive, Intransitive & Multiple Contexts</p>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="overall-progress">
+            <div class="progress-label">
+                <span>Daily Study Goal 📚</span>
+                <span id="progress-text">0% Done</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- High-Frequency Words Module -->
+        <h2 class="section-title">💡 Today's Target Vocabulary (Tap card to complete)</h2>
+        <div class="vocab-grid">
+            
+            <!-- Card 1: Decline -->
+            <div class="vocab-card" onclick="toggleCard(this, 1)">
+                <div class="card-header">
+                    <div class="word-audio-wrapper">
+                        <span class="en-word">decline</span>
+                        <button class="audio-btn" onclick="speakWord('decline', event)">📢</button>
+                    </div>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="phonetic">[ dɪˈklaɪn ]</div>
+                <div class="pos-container">
+                    <div class="pos-block">
+                        <span class="pos-badge">vi. intransitive</span>
+                        <div class="ko-meaning">감소하다, 하락하다</div>
+                        <div class="example-box">Company profits <strong>declined</strong> sharply during the third quarter.</div>
+                    </div>
+                    <div class="pos-block" style="border-left-color: #1e90ff;">
+                        <span class="pos-badge" style="background:#e0f2fe; color:#0369a1;">vt. transitive</span>
+                        <div class="ko-meaning">거절하다, 사양하다</div>
+                        <div class="example-box">The project director <strong>declined</strong> our request for a budget increase.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Return -->
+            <div class="vocab-card" onclick="toggleCard(this, 2)">
+                <div class="card-header">
+                    <div class="word-audio-wrapper">
+                        <span class="en-word">return</span>
+                        <button class="audio-btn" onclick="speakWord('return', event)">📢</button>
+                    </div>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="phonetic">[ rɪˈtɜːrn ]</div>
+                <div class="pos-container">
+                    <div class="pos-block">
+                        <span class="pos-badge">vi. intransitive</span>
+                        <div class="ko-meaning">돌아가다, 돌아오다</div>
+                        <div class="example-box">The marketing team will <strong>return</strong> to the office after lunch.</div>
+                    </div>
+                    <div class="pos-block" style="border-left-color: #1e90ff;">
+                        <span class="pos-badge" style="background:#e0f2fe; color:#0369a1;">vt. transitive</span>
+                        <div class="ko-meaning">반납하다, 돌려주다</div>
+                        <div class="example-box">Please remember to <strong>return</strong> the borrowed equipment by Friday afternoon.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Feature -->
+            <div class="vocab-card" onclick="toggleCard(this, 3)">
+                <div class="card-header">
+                    <div class="word-audio-wrapper">
+                        <span class="en-word">feature</span>
+                        <button class="audio-btn" onclick="speakWord('feature', event)">📢</button>
+                    </div>
+                    <div class="check-icon">✓</div>
+                </div>
+                <div class="phonetic">[ ˈfiːtʃər ]</div>
+                <div class="pos-container">
+                    <div class="pos-block" style="border-left-color: #2ed573;">
+                        <span class="pos-badge" style="background:#dcfce7; color:#15803d;">n. noun</span>
+                        <div class="ko-meaning">특징, 기능, 특집 기사</div>
+                        <div class="example-box">This upgraded smartphone model boasts an advanced security <strong>feature</strong>.</div>
+                    </div>
+                    <div class="pos-block" style="border-left-color: #1e90ff;">
+                        <span class="pos-badge" style="background:#e0f2fe; color:#0369a1;">vt. transitive</span>
+                        <div class="ko-meaning">~을 특징으로 삼다, 크게 다루다</div>
+                        <div class="example-box">The upcoming regional convention will <strong>feature</strong> several local business leaders.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sentence Structure Quiz -->
+        <div class="quiz-box">
+            <h2 class="section-title" style="justify-content: center; margin-top: 0;">🎯 Grammar & Context Check</h2>
+            <div class="quiz-question">
+                Identify the correct structure to complete the sentence below:
+                <span>"The corporate representative unexpectedly ________ the invitation."<br><small style="font-size:0.85rem; color:#64748b; font-family:'Quicksand'; font-weight:600;">(그 대표는 예기치 않게 초대장을 거절했다.)</small></span>
+            </div>
+            <div class="quiz-options">
+                <button class="option-btn" onclick="checkAnswer(this, true)">declined (Correct Transitive Usage)</button>
+                <button class="option-btn" onclick="checkAnswer(this, false)">declined to (Incorrect Intransitive Setup)</button>
+                <button class="option-btn" onclick="checkAnswer(this, false)">returned to (Incorrect Contextual Meaning)</button>
+            </div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>
+
+        <footer>
+            © 2026 Freshman TOEIC Masterclass • Work Hard, Achieve High! 🚀
+        </footer>
+    </div>
+
+    <script>
+        const completedCards = { 1: false, 2: false, 3: false };
+        const totalCards = 3;
+
+        // Native Native Text-to-Speech Engine
+        function speakWord(word, event) {
+            // Prevent the click event from bubble-triggering card completion status
+            if(event) event.stopPropagation();
+            
+            if ('speechSynthesis' in window) {
+                // Cancel ongoing speech to handle quick repetitive clicks
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US'; // Forces clear American English Accent
+                utterance.rate = 0.85;    // Comfortably paced for clear student comprehension
+                utterance.pitch = 1.0;
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Text-to-speech isn't supported on your current browser version.");
+            }
+        }
+
+        function toggleCard(cardElement, id) {
+            cardElement.classList.toggle('completed');
+            completedCards[id] = cardElement.classList.contains('completed');
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+            const completedCount = Object.values(completedCards).filter(status => status === true).length;
+            const percentage = Math.round((completedCount / totalCards) * 100);
+            
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').innerText = percentage + '% Done';
+        }
+
+        function checkAnswer(button, isCorrect) {
+            const options = button.parentElement.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'wrong');
+                opt.disabled = true;
+            });
+
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.innerHTML = "🎉 Spot on! Because there is a direct object ('the invitation'), we need a transitive verb right here! 👍";
+                feedback.style.color = "#2ed573";
+            } else {
+                button.classList.add('wrong');
+                feedback.innerHTML = "😢 Not quite! This specific sentence structure expects a transitive verb action directly handling the object.";
+                feedback.style.color = "#ff4757";
+                
+                setTimeout(() => {
+                    options.forEach(opt => opt.disabled = false);
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
